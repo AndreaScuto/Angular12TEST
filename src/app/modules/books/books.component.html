@@ -1,1 +1,32 @@
-<p>books works!</p>
+<div class="container" *ngIf="(bookList | async) as books; else loadingState">
+  <div class="list" *ngIf="books.length > 0; else noBooks">
+    <div *ngFor="let b of books; trackBy TrackBookById">
+        <mat-card class="card-cont">
+          <mat-card-title>{{ b.title }}</mat-card-title>
+          <mat-card-content class="card-content">
+            <p>{{ b.author }}</p>
+            <p>{{ b.description }}</p>
+            <p>{{ b.publicationYear }}</p>
+            <p>{{ b.status }}</p>
+          </mat-card-content>
+          <mat-card-actions>
+            <button [routerLink]="['/books',b.id]" mat-raised-button color="primary">Entra</button>
+            <button (click)="deleteBook(b.id)" mat-raised-button color="warn">Elimina</button>
+          </mat-card-actions>
+        </mat-card>
+    </div>
+  </div>
+  <ng-template #noBooks>
+    <div>
+      <p>📚 Nessun libro trovato. Prova ad aggiungerne uno!</p>
+    </div>
+  </ng-template>
+</div>
+
+<ng-template #loadingState>
+  <div class="loading-spinner">
+    <mat-spinner></mat-spinner>
+    <p>Caricamento libri in corso...</p>
+  </div>
+</ng-template>
+
